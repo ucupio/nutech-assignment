@@ -24,6 +24,9 @@ export class Product {
   price: string;
 
   @Prop()
+  stock: string;
+
+  @Prop()
   active: string;
 
   @Prop()

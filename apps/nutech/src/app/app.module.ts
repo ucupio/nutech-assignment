@@ -15,6 +15,8 @@ import { ProductsModule } from '../products/products.module';
 
 @Module({
   imports: [MongooseModule.forRoot(process.env.MONGODB_URL),
+    UserModule,
+    AuthModule,
    ProductsModule
   ]
 })
