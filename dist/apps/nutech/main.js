@@ -857,6 +857,13 @@ function bootstrap() {
         const app = yield core_1.NestFactory.create(app_module_1.AppModule);
         const globalPrefix = 'api';
         app.setGlobalPrefix(globalPrefix);
+        app.enableCors({
+            allowedHeaders: ['content-type'],
+            origin: '*',
+            methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+            credentials: true,
+            optionsSuccessStatus: 200
+        });
         const port = process.env.PORT || 3000;
         yield app.listen(port);
         common_1.Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);

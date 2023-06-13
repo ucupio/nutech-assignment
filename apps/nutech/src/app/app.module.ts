@@ -16,10 +16,8 @@ const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-const isProduction = process.env.NODE_ENV === 'production'
-
 @Module({
-  imports: [MongooseModule.forRoot(isProduction ? process.env.MONGODB_URL : process.env.MONGODB_URL_DEV),
+  imports: [MongooseModule.forRoot(process.env.MONGODB_URL),
     UserModule,
     AuthModule,
    ProductsModule
