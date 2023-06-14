@@ -13,6 +13,8 @@ interface MulterRequest extends Request {
 @Injectable()
 export class ImageKitMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
+    console.log(req.file);
+    
     if (!(req as MulterRequest).file) {
       next({ name: 'File required' });
     } else {

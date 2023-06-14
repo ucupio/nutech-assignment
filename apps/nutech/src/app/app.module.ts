@@ -24,4 +24,11 @@ const isProduction = process.env.NODE_ENV === 'production'
    ProductsModule
   ]
 })
-export class AppModule{}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(upload.single('image'), ImageKitMiddleware)
+      .exclude( { path: 'api/products', method: RequestMethod.GET })
+      .forRoutes(ProductsController);
+  }
+}

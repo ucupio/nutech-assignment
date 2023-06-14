@@ -21,12 +21,12 @@ export class ProductsController {
   create(@Body() createProductDto: CreateProductDto) {
     return this.productsService.create(createProductDto);
   }
-  @UseGuards(AuthGuard('jwt'))
+  
   @Get()
   findAll() {
     return this.productsService.findAll();
   }
-  @UseGuards(AuthGuard('jwt'))
+  
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.productsService.findOne(id);
