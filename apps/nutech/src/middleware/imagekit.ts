@@ -13,12 +13,10 @@ interface MulterRequest extends Request {
 @Injectable()
 export class ImageKitMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
-    console.log(req.file);
     
     if (!(req as MulterRequest).file) {
       next({ name: 'File required' });
     } else {
-      console.log('masuk');
 
       const form = new FormData();
       const date = new Date().toLocaleDateString();
@@ -42,7 +40,6 @@ export class ImageKitMiddleware implements NestMiddleware {
         })
         .then(function (response) {
           req.body.image = response.data.url;
-          console.log(response.data.url);
 
           next();
         })

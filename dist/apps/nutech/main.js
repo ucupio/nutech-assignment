@@ -42,7 +42,7 @@ let AppModule = class AppModule {
     configure(consumer) {
         consumer
             .apply(upload.single('image'), imagekit_1.ImageKitMiddleware)
-            .exclude({ path: 'api/products', method: common_1.RequestMethod.GET })
+            .exclude({ path: 'products', method: common_1.RequestMethod.GET }, 'products/(.*)')
             .forRoutes(products_controller_1.ProductsController);
     }
 };

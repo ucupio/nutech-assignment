@@ -28,7 +28,10 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(upload.single('image'), ImageKitMiddleware)
-      .exclude( { path: 'api/products', method: RequestMethod.GET })
+      .exclude( 
+        { path: 'products', method: RequestMethod.GET },
+        'products/(.*)'
+      )
       .forRoutes(ProductsController);
   }
 }
