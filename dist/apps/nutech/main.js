@@ -29,21 +29,14 @@ exports.AppModule = void 0;
 const tslib_1 = __webpack_require__(1);
 const common_1 = __webpack_require__(2);
 const mongoose_1 = __webpack_require__(5);
-const imagekit_1 = __webpack_require__(6);
-const users_module_1 = __webpack_require__(9);
-const auth_module_1 = __webpack_require__(25);
-const products_module_1 = __webpack_require__(27);
-const multer = __webpack_require__(33);
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+const users_module_1 = __webpack_require__(6);
+const auth_module_1 = __webpack_require__(22);
+const products_module_1 = __webpack_require__(24);
+const multer_1 = tslib_1.__importDefault(__webpack_require__(30));
+const storage = multer_1.default.memoryStorage();
+const upload = (0, multer_1.default)({ storage: storage });
 const isProduction = process.env.NODE_ENV === 'production';
 let AppModule = class AppModule {
-    configure(consumer) {
-        consumer
-            .apply(upload.single('image'), imagekit_1.ImageKitMiddleware)
-            .exclude({ path: 'api/products', method: common_1.RequestMethod.GET }, 'api/products/(.*)')
-            .forRoutes('products');
-    }
 };
 AppModule = tslib_1.__decorate([
     (0, common_1.Module)({
@@ -69,77 +62,18 @@ module.exports = require("@nestjs/mongoose");
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.ImageKitMiddleware = void 0;
-const tslib_1 = __webpack_require__(1);
-/* eslint-disable @typescript-eslint/no-explicit-any */
-const common_1 = __webpack_require__(2);
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const FormData = __webpack_require__(7);
-const axios_1 = tslib_1.__importDefault(__webpack_require__(8));
-let ImageKitMiddleware = class ImageKitMiddleware {
-    use(req, res, next) {
-        if (!req.file) {
-            next({ name: 'File required' });
-        }
-        else {
-            console.log('masuk');
-            const form = new FormData();
-            const date = new Date().toLocaleDateString();
-            form.append('file', req.file.buffer.toString('base64'));
-            form.append('fileName', `${req.body.productname}-${date}`);
-            const bufferFrom = `${process.env.PRIVATE_KEY_IMAGEKIT}:`;
-            const privateKey = Buffer.from(bufferFrom).toString('base64');
-            axios_1.default
-                .post('https://api.imagekit.io/v1/files/upload', form, {
-                headers: Object.assign(Object.assign({}, form.getHeaders()), { Authorization: `Basic ${privateKey}` }),
-            })
-                .then(function (response) {
-                req.body.image = response.data.url;
-                console.log(response.data.url);
-                next();
-            })
-                .catch(function (error) {
-                next(error);
-            });
-        }
-    }
-};
-ImageKitMiddleware = tslib_1.__decorate([
-    (0, common_1.Injectable)()
-], ImageKitMiddleware);
-exports.ImageKitMiddleware = ImageKitMiddleware;
-
-
-/***/ }),
-/* 7 */
-/***/ ((module) => {
-
-module.exports = require("form-data");
-
-/***/ }),
-/* 8 */
-/***/ ((module) => {
-
-module.exports = require("axios");
-
-/***/ }),
-/* 9 */
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.UserModule = void 0;
 const tslib_1 = __webpack_require__(1);
 const common_1 = __webpack_require__(2);
-const user_service_1 = __webpack_require__(10);
-const user_controller_1 = __webpack_require__(15);
+const user_service_1 = __webpack_require__(7);
+const user_controller_1 = __webpack_require__(12);
 const mongoose_1 = __webpack_require__(5);
-const user_schema_1 = __webpack_require__(14);
-const jwt_1 = __webpack_require__(19);
-const hash_service_1 = __webpack_require__(12);
-const auth_service_1 = __webpack_require__(20);
-const jwt_strategy_1 = __webpack_require__(21);
-const local_strategy_1 = __webpack_require__(23);
+const user_schema_1 = __webpack_require__(11);
+const jwt_1 = __webpack_require__(16);
+const hash_service_1 = __webpack_require__(9);
+const auth_service_1 = __webpack_require__(17);
+const jwt_strategy_1 = __webpack_require__(18);
+const local_strategy_1 = __webpack_require__(20);
 let UserModule = class UserModule {
 };
 UserModule = tslib_1.__decorate([
@@ -164,7 +98,7 @@ exports.UserModule = UserModule;
 
 
 /***/ }),
-/* 10 */
+/* 7 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -174,9 +108,9 @@ exports.UserService = void 0;
 const tslib_1 = __webpack_require__(1);
 const common_1 = __webpack_require__(2);
 const mongoose_1 = __webpack_require__(5);
-const mongoose_2 = __webpack_require__(11);
-const hash_service_1 = __webpack_require__(12);
-const user_schema_1 = __webpack_require__(14);
+const mongoose_2 = __webpack_require__(8);
+const hash_service_1 = __webpack_require__(9);
+const user_schema_1 = __webpack_require__(11);
 let UserService = class UserService {
     constructor(userModel, hashService) {
         this.userModel = userModel;
@@ -214,13 +148,13 @@ exports.UserService = UserService;
 
 
 /***/ }),
-/* 11 */
+/* 8 */
 /***/ ((module) => {
 
 module.exports = require("mongoose");
 
 /***/ }),
-/* 12 */
+/* 9 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -228,7 +162,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.HashService = void 0;
 const tslib_1 = __webpack_require__(1);
 const common_1 = __webpack_require__(2);
-const bcrypt = tslib_1.__importStar(__webpack_require__(13));
+const bcrypt = tslib_1.__importStar(__webpack_require__(10));
 let HashService = class HashService {
     hashPassword(password) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -249,13 +183,13 @@ exports.HashService = HashService;
 
 
 /***/ }),
-/* 13 */
+/* 10 */
 /***/ ((module) => {
 
 module.exports = require("bcrypt");
 
 /***/ }),
-/* 14 */
+/* 11 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -285,7 +219,7 @@ exports.UserSchema = mongoose_1.SchemaFactory.createForClass(User);
 
 
 /***/ }),
-/* 15 */
+/* 12 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -294,9 +228,9 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.UserController = void 0;
 const tslib_1 = __webpack_require__(1);
 const common_1 = __webpack_require__(2);
-const user_service_1 = __webpack_require__(10);
-const create_user_dto_1 = __webpack_require__(16);
-const passport_1 = __webpack_require__(18);
+const user_service_1 = __webpack_require__(7);
+const create_user_dto_1 = __webpack_require__(13);
+const passport_1 = __webpack_require__(15);
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -331,20 +265,20 @@ exports.UserController = UserController;
 
 
 /***/ }),
-/* 16 */
+/* 13 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.CreateUserDto = void 0;
-const user_entity_1 = __webpack_require__(17);
+const user_entity_1 = __webpack_require__(14);
 class CreateUserDto extends user_entity_1.User {
 }
 exports.CreateUserDto = CreateUserDto;
 
 
 /***/ }),
-/* 17 */
+/* 14 */
 /***/ ((__unused_webpack_module, exports) => {
 
 
@@ -356,19 +290,19 @@ exports.User = User;
 
 
 /***/ }),
-/* 18 */
+/* 15 */
 /***/ ((module) => {
 
 module.exports = require("@nestjs/passport");
 
 /***/ }),
-/* 19 */
+/* 16 */
 /***/ ((module) => {
 
 module.exports = require("@nestjs/jwt");
 
 /***/ }),
-/* 20 */
+/* 17 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -376,10 +310,10 @@ var _a, _b, _c;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AuthService = void 0;
 const tslib_1 = __webpack_require__(1);
-const user_service_1 = __webpack_require__(10);
+const user_service_1 = __webpack_require__(7);
 const common_1 = __webpack_require__(2);
-const jwt_1 = __webpack_require__(19);
-const hash_service_1 = __webpack_require__(12);
+const jwt_1 = __webpack_require__(16);
+const hash_service_1 = __webpack_require__(9);
 let AuthService = class AuthService {
     constructor(userService, hashService, jwtService) {
         this.userService = userService;
@@ -415,15 +349,15 @@ exports.AuthService = AuthService;
 
 
 /***/ }),
-/* 21 */
+/* 18 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.JwtStrategy = void 0;
 const tslib_1 = __webpack_require__(1);
-const passport_jwt_1 = __webpack_require__(22);
-const passport_1 = __webpack_require__(18);
+const passport_jwt_1 = __webpack_require__(19);
+const passport_1 = __webpack_require__(15);
 const common_1 = __webpack_require__(2);
 let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy) {
     constructor() {
@@ -450,13 +384,13 @@ exports.JwtStrategy = JwtStrategy;
 
 
 /***/ }),
-/* 22 */
+/* 19 */
 /***/ ((module) => {
 
 module.exports = require("passport-jwt");
 
 /***/ }),
-/* 23 */
+/* 20 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -464,9 +398,9 @@ var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.LocalStrategy = void 0;
 const tslib_1 = __webpack_require__(1);
-const auth_service_1 = __webpack_require__(20);
-const passport_local_1 = __webpack_require__(24);
-const passport_1 = __webpack_require__(18);
+const auth_service_1 = __webpack_require__(17);
+const passport_local_1 = __webpack_require__(21);
+const passport_1 = __webpack_require__(15);
 const common_1 = __webpack_require__(2);
 let LocalStrategy = class LocalStrategy extends (0, passport_1.PassportStrategy)(passport_local_1.Strategy) {
     constructor(authService) {
@@ -493,13 +427,13 @@ exports.LocalStrategy = LocalStrategy;
 
 
 /***/ }),
-/* 24 */
+/* 21 */
 /***/ ((module) => {
 
 module.exports = require("passport-local");
 
 /***/ }),
-/* 25 */
+/* 22 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -507,14 +441,14 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AuthModule = void 0;
 const tslib_1 = __webpack_require__(1);
 const common_1 = __webpack_require__(2);
-const auth_service_1 = __webpack_require__(20);
-const auth_controller_1 = __webpack_require__(26);
+const auth_service_1 = __webpack_require__(17);
+const auth_controller_1 = __webpack_require__(23);
 const mongoose_1 = __webpack_require__(5);
-const user_schema_1 = __webpack_require__(14);
-const jwt_1 = __webpack_require__(19);
-const user_service_1 = __webpack_require__(10);
-const hash_service_1 = __webpack_require__(12);
-const local_strategy_1 = __webpack_require__(23);
+const user_schema_1 = __webpack_require__(11);
+const jwt_1 = __webpack_require__(16);
+const user_service_1 = __webpack_require__(7);
+const hash_service_1 = __webpack_require__(9);
+const local_strategy_1 = __webpack_require__(20);
 let AuthModule = class AuthModule {
 };
 AuthModule = tslib_1.__decorate([
@@ -539,7 +473,7 @@ exports.AuthModule = AuthModule;
 
 
 /***/ }),
-/* 26 */
+/* 23 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -547,9 +481,9 @@ var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AuthController = void 0;
 const tslib_1 = __webpack_require__(1);
-const auth_service_1 = __webpack_require__(20);
+const auth_service_1 = __webpack_require__(17);
 const common_1 = __webpack_require__(2);
-const passport_1 = __webpack_require__(18);
+const passport_1 = __webpack_require__(15);
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -576,7 +510,7 @@ exports.AuthController = AuthController;
 
 
 /***/ }),
-/* 27 */
+/* 24 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -584,9 +518,9 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ProductsModule = void 0;
 const tslib_1 = __webpack_require__(1);
 const common_1 = __webpack_require__(2);
-const products_service_1 = __webpack_require__(28);
-const products_controller_1 = __webpack_require__(29);
-const product_entity_1 = __webpack_require__(32);
+const products_service_1 = __webpack_require__(25);
+const products_controller_1 = __webpack_require__(26);
+const product_entity_1 = __webpack_require__(29);
 const mongoose_1 = __webpack_require__(5);
 let ProductsModule = class ProductsModule {
 };
@@ -603,7 +537,7 @@ exports.ProductsModule = ProductsModule;
 
 
 /***/ }),
-/* 28 */
+/* 25 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -613,7 +547,7 @@ exports.ProductsService = void 0;
 const tslib_1 = __webpack_require__(1);
 const common_1 = __webpack_require__(2);
 const mongoose_1 = __webpack_require__(5);
-const mongoose_2 = __webpack_require__(11);
+const mongoose_2 = __webpack_require__(8);
 let ProductsService = class ProductsService {
     constructor(productModel) {
         this.productModel = productModel;
@@ -651,7 +585,7 @@ exports.ProductsService = ProductsService;
 
 
 /***/ }),
-/* 29 */
+/* 26 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -660,9 +594,10 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ProductsController = void 0;
 const tslib_1 = __webpack_require__(1);
 const common_1 = __webpack_require__(2);
-const products_service_1 = __webpack_require__(28);
-const create_product_dto_1 = __webpack_require__(30);
-const update_product_dto_1 = __webpack_require__(31);
+const products_service_1 = __webpack_require__(25);
+const create_product_dto_1 = __webpack_require__(27);
+const update_product_dto_1 = __webpack_require__(28);
+const passport_1 = __webpack_require__(15);
 let ProductsController = class ProductsController {
     constructor(productsService) {
         this.productsService = productsService;
@@ -684,6 +619,7 @@ let ProductsController = class ProductsController {
     }
 };
 tslib_1.__decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Post)(),
     tslib_1.__param(0, (0, common_1.Body)()),
     tslib_1.__metadata("design:type", Function),
@@ -691,12 +627,14 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:returntype", void 0)
 ], ProductsController.prototype, "create", null);
 tslib_1.__decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Get)(),
     tslib_1.__metadata("design:type", Function),
     tslib_1.__metadata("design:paramtypes", []),
     tslib_1.__metadata("design:returntype", void 0)
 ], ProductsController.prototype, "findAll", null);
 tslib_1.__decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Get)(':id'),
     tslib_1.__param(0, (0, common_1.Param)('id')),
     tslib_1.__metadata("design:type", Function),
@@ -704,6 +642,7 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:returntype", void 0)
 ], ProductsController.prototype, "findOne", null);
 tslib_1.__decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Patch)(':id'),
     tslib_1.__param(0, (0, common_1.Param)('id')),
     tslib_1.__param(1, (0, common_1.Body)()),
@@ -712,6 +651,7 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:returntype", void 0)
 ], ProductsController.prototype, "update", null);
 tslib_1.__decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Delete)(':id'),
     tslib_1.__param(0, (0, common_1.Param)('id')),
     tslib_1.__metadata("design:type", Function),
@@ -726,7 +666,7 @@ exports.ProductsController = ProductsController;
 
 
 /***/ }),
-/* 30 */
+/* 27 */
 /***/ ((__unused_webpack_module, exports) => {
 
 
@@ -738,20 +678,20 @@ exports.CreateProductDto = CreateProductDto;
 
 
 /***/ }),
-/* 31 */
+/* 28 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.UpdateProductDto = void 0;
-const create_product_dto_1 = __webpack_require__(30);
+const create_product_dto_1 = __webpack_require__(27);
 class UpdateProductDto extends create_product_dto_1.CreateProductDto {
 }
 exports.UpdateProductDto = UpdateProductDto;
 
 
 /***/ }),
-/* 32 */
+/* 29 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -805,7 +745,7 @@ exports.ProductSchema = mongoose_1.SchemaFactory.createForClass(Product);
 
 
 /***/ }),
-/* 33 */
+/* 30 */
 /***/ ((module) => {
 
 module.exports = require("multer");
@@ -857,13 +797,7 @@ function bootstrap() {
         const app = yield core_1.NestFactory.create(app_module_1.AppModule);
         const globalPrefix = 'api';
         app.setGlobalPrefix(globalPrefix);
-        app.enableCors({
-            allowedHeaders: ['content-type'],
-            origin: '*',
-            methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-            credentials: true,
-            optionsSuccessStatus: 200
-        });
+        app.enableCors();
         const port = process.env.PORT || 3000;
         yield app.listen(port);
         common_1.Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
