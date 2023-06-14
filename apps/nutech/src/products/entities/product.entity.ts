@@ -21,13 +21,15 @@ export class Product {
   recipe: string;
 
   @Prop()
-  price: string;
+  sellingprice: string;
+  @Prop()
+  buyingprice: string;
 
   @Prop()
   stock: string;
 
   @Prop()
-  active: string;
+  isactive: string;
 
   @Prop()
   image: string;
